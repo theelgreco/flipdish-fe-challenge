@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import type { MenuType, MenuItemType, MenuItemOptionSetType, MenuSectionType } from "./types";
 import { MenuSquare } from "lucide-react";
 import React from "react";
