@@ -28,7 +28,7 @@ function App() {
 
     return (
         <>
-            <header className=" flex items-center justify-between p-6 border border-b-0 border-neutral-700 rounded">
+            <header className="flex items-center justify-between p-6 border border-b-0 border-neutral-700 rounded">
                 <h1 className="text-4xl font-extralight">MENU</h1>
                 <MenuSquare />
             </header>
