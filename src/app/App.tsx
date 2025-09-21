@@ -5,13 +5,23 @@ import { MenuSquare } from "lucide-react";
 import React from "react";
 
 function App() {
+    const [loading, setLoading] = useState(false);
     const [menu, setMenu] = useState<MenuType>();
+    const [error, setError] = useState<string>();
 
     useEffect(() => {
         async function getMenu() {
-            const response = await fetch("https://menus.flipdish.co/prod/16798/e6220da2-c34a-4ea2-bb51-a3e190fc5f08.json");
-            const json = await response.json();
-            setMenu(json);
+            try {
+                setLoading(true);
+                const response = await fetch("https://menus.flipdish.co/prod/16798/e6220da2-c34a-4ea2-bb51-a3e190fc5f08.json");
+                if (!response.ok) throw new Error();
+                const json = await response.json();
+                setMenu(json);
+            } catch {
+                setError("Error loading menu");
+            } finally {
+                setLoading(false);
+            }
         }
 
         getMenu();
@@ -24,15 +34,11 @@ function App() {
                 <MenuSquare />
             </header>
             <main className="border border-neutral-700 rounded">
-                {menu ? (
-                    <>
-                        {menu.MenuSections.map((menuSection) => (
-                            <MenuSection key={menuSection.PublicId} section={menuSection} />
-                        ))}
-                    </>
-                ) : (
-                    <p>Loading...</p>
-                )}
+                {loading && <p className="p-6">Loading...</p>}
+                {error && !menu && <p className="p-6 text-red-500">{error}</p>}
+                {menu?.MenuSections.map((menuSection) => (
+                    <MenuSection key={menuSection.PublicId} section={menuSection} />
+                ))}
             </main>
         </>
     );
@@ -55,7 +61,7 @@ function MenuSection({ section }: { section: MenuSectionType }) {
                     {section.MenuItems.map((menuItem, index) => (
                         <React.Fragment key={menuItem.PublicId}>
                             <MenuItem menuItem={menuItem} />
-                            {index === section.MenuItems.length - 1 ? <></> : <hr className="border-neutral-700 -mx-6" />}
+                            {index < section.MenuItems.length - 1 && <hr className="border-neutral-700 -mx-6" />}
                         </React.Fragment>
                     ))}
                 </div>
