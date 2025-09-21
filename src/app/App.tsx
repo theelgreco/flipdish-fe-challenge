@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import type { Menu, MenuItem, MenuItemOptionSet, MenuSection } from "./types";
 import { MenuSquare } from "lucide-react";
+import React from "react";
 
 function App() {
     const [menu, setMenu] = useState<Menu>();
@@ -50,10 +51,10 @@ function MenuSection({ section }: { section: MenuSection }) {
                 </header>
                 <div className="p-6 flex flex-col gap-5">
                     {section.MenuItems.map((menuItem, index) => (
-                        <>
-                            <MenuItem key={menuItem.PublicId} menuItem={menuItem} />
+                        <React.Fragment key={menuItem.PublicId}>
+                            <MenuItem menuItem={menuItem} />
                             {index === section.MenuItems.length - 1 ? <></> : <hr className="border-neutral-700 -mx-6" />}
-                        </>
+                        </React.Fragment>
                     ))}
                 </div>
             </article>
@@ -63,7 +64,7 @@ function MenuSection({ section }: { section: MenuSection }) {
 
 function MenuItem({ menuItem }: { menuItem: MenuItem }) {
     return (
-        <div className=" flex flex-col">
+        <div className="flex flex-col">
             <div className="flex items-center justify-between gap-2">
                 <div>
                     <h3 className="font-bold text-lg">{menuItem.Name}</h3>
