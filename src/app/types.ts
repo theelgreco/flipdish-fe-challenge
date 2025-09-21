@@ -1,19 +1,19 @@
-export interface Menu {
+export interface MenuType {
     MenuId: number;
     MenuVersionNumber: number;
     VersionGuid: string;
-    MenuSections: MenuSection[];
+    MenuSections: MenuSectionType[];
     MenuSectionBehaviour: number;
     DisplaySectionLinks: boolean;
     ConcessionStores: unknown[];
 }
 
-export interface MenuSection {
+export interface MenuSectionType {
     MenuSectionId: number;
     Name: string;
     Description: null | string;
     DisplayOrder: number;
-    MenuItems: MenuItem[];
+    MenuItems: MenuItemType[];
     PublicId: string;
     IsDeleted: boolean;
     IsAvailable: boolean;
@@ -22,12 +22,12 @@ export interface MenuSection {
     ImageUrl: null | string;
     CellAspectRatio: number;
     CellLayoutType: number;
-    MenuSectionAvailability: MenuSectionAvailability;
+    MenuSectionAvailability: MenuSectionAvailabilityType;
     ConcessionStoreId: null;
     MenuSectionMetadata: unknown[];
 }
 
-export interface MenuItem {
+export interface MenuItemType {
     MenuItemId: number;
     Name: string;
     Description: null | string;
@@ -39,7 +39,7 @@ export interface MenuItem {
     Tags: unknown[];
     PublicId: string;
     IsAvailable: boolean;
-    MenuItemOptionSets: MenuItemOptionSet[];
+    MenuItemOptionSets: MenuItemOptionSetType[];
     TaxRate: null;
     TaxRateId: number | null;
     TaxValue: number;
@@ -56,7 +56,7 @@ export interface MenuItem {
     MenuItemMetadata: unknown[];
 }
 
-export interface MenuItemOptionSet {
+export interface MenuItemOptionSetType {
     Name: null | string;
     MenuItemOptionSetId: number;
     IsMasterOptionSet: boolean;
@@ -65,7 +65,7 @@ export interface MenuItemOptionSet {
     MaxSelectCount: number;
     IsDeleted: boolean;
     PublicId: string;
-    MenuItemOptionSetItems: MenuItemOptionSetItem[];
+    MenuItemOptionSetItems: MenuItemOptionSetItemType[];
     ImageName: null;
     ImageUrl: null;
     CellAspectRatio: number;
@@ -75,7 +75,7 @@ export interface MenuItemOptionSet {
     MenuItemOptionSetMetadata: unknown[];
 }
 
-export interface MenuItemOptionSetItem {
+export interface MenuItemOptionSetItemType {
     MenuItemOptionSetItemId: number;
     Name: string;
     Price: number;
@@ -95,13 +95,13 @@ export interface MenuItemOptionSetItem {
     OptionSetItemMetadata: unknown[];
 }
 
-export interface MenuSectionAvailability {
+export interface MenuSectionAvailabilityType {
     MenuSectionId: number;
-    AvailableTimes: AvailableTime[] | null;
+    AvailableTimes: AvailableTimeType[] | null;
     AvailabilityMode: number;
 }
 
-export interface AvailableTime {
+export interface AvailableTimeType {
     BusinessHoursPeriodId: number;
     DayOfWeek: number;
     StartTime: string;

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import type { Menu, MenuItem, MenuItemOptionSet, MenuSection } from "./types";
+import type { MenuType, MenuItemType, MenuItemOptionSetType, MenuSectionType } from "./types";
 import { MenuSquare } from "lucide-react";
 import React from "react";
 
 function App() {
-    const [menu, setMenu] = useState<Menu>();
+    const [menu, setMenu] = useState<MenuType>();
 
     useEffect(() => {
         async function getMenu() {
@@ -38,7 +38,7 @@ function App() {
     );
 }
 
-function MenuSection({ section }: { section: MenuSection }) {
+function MenuSection({ section }: { section: MenuSectionType }) {
     if (section.IsAvailable && section.MenuItems.length) {
         return (
             <section>
@@ -64,49 +64,47 @@ function MenuSection({ section }: { section: MenuSection }) {
     }
 }
 
-function MenuItem({ menuItem }: { menuItem: MenuItem }) {
+function MenuItem({ menuItem }: { menuItem: MenuItemType }) {
     return (
         <article className="flex flex-col">
             <header className="flex items-center justify-between gap-2">
                 <div>
                     <h3 className="font-bold text-lg">{menuItem.Name}</h3>
-                    {menuItem.Price ? <p className="text-neutral-400 ml-auto">£{menuItem.Price.toFixed(2)}</p> : <></>}
+                    {menuItem.Price > 0 && <p className="text-neutral-400 ml-auto">£{menuItem.Price.toFixed(2)}</p>}
                     <small className=" font-light text-neutral-400">{menuItem.Description}</small>
                 </div>
-                {menuItem.ImageUrl ? (
-                    <img className="max-h-[100px] rounded-lg aspect-square object-cover" src={menuItem.ImageUrl} />
-                ) : (
-                    <></>
+                {menuItem.ImageUrl && (
+                    <img className="max-h-[100px] rounded-lg aspect-square object-cover" src={menuItem.ImageUrl} alt={menuItem.Name} />
                 )}
             </header>
-            {menuItem.MenuItemOptionSets.length ? (
+            {menuItem.MenuItemOptionSets.length > 0 && (
                 <div className="flex flex-col gap-5 mt-5">
                     {menuItem.MenuItemOptionSets.map((optionSet) => (
                         <MenuItemOptionSet key={optionSet.PublicId} optionSet={optionSet} />
                     ))}
                 </div>
-            ) : (
-                <></>
             )}
         </article>
     );
 }
 
-function MenuItemOptionSet({ optionSet }: { optionSet: MenuItemOptionSet }) {
+function MenuItemOptionSet({ optionSet }: { optionSet: MenuItemOptionSetType }) {
     return (
-        <div>
-            {optionSet.Name ? <small className="text-neutral-300">{optionSet.Name}</small> : <></>}
-            <ul>
-                {optionSet.MenuItemOptionSetItems.map((optionSetItem) => (
-                    <li key={optionSetItem.PublicId} className="flex gap-2">
-                        <p>{optionSetItem.Name}</p>
-                        <p className="text-neutral-400 ml-auto">
-                            {optionSet.IsMasterOptionSet ? "" : "+"} £{optionSetItem.Price.toFixed(2)}
-                        </p>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <ul>
+            {optionSet.Name && (
+                <li>
+                    <small className="text-neutral-300">{optionSet.Name}</small>
+                </li>
+            )}
+            {optionSet.MenuItemOptionSetItems.map((optionSetItem) => (
+                <li key={optionSetItem.PublicId} className="flex">
+                    <p>{optionSetItem.Name}</p>
+                    <p className="text-neutral-400 ml-auto">
+                        {optionSet.IsMasterOptionSet ? "" : "+"} £{optionSetItem.Price.toFixed(2)}
+                    </p>
+                </li>
+            ))}
+        </ul>
     );
 }
 
